@@ -1,55 +1,8 @@
 # IDEA BANK
 
-## Purpose
-
-Every idea is valuable.
-
-No idea should be forgotten.
-
-Ideas are stored here until the right time comes.
-
----
-
-## Rules
-
-- Never reject an idea immediately.
-- Record every idea.
-- Evaluate it later.
-- Only one Primary Project can be active.
-- Other ideas wait in the Idea Bank.
-
----
 ## Idea #001
-
-Title:
-Educational application for children with learning difficulties.
-
-Status:
-Waiting
-
-Reason:
-Can help my daughter and many other children.
-
-Priority:
-High
-
-# IDEAS
-
-## Template
-
-### Idea #XXX
-
-Title:
-
-Description:
-
-Why is it valuable?
-
-Status:
-Waiting
-
-Priority:
-Low / Medium / High
-
-Date:
-YYYY-MM-DD
+Title: Educational application for children with learning difficulties.[cite: 1]
+Status: Waiting[cite: 1]
+Reason: Can help my daughter and many other children.[cite: 1]
+Priority: High[cite: 1]
+Date: 2026-07-08[cite: 1]

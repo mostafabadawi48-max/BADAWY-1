@@ -1,16 +1,13 @@
 # NEXT ACTION
 
 ## Current Sprint
-Sprint 2 - Brain System
+Sprint 3 - Dashboard System
 
 ## Current Task
-Complete the Brain System.
+Build and launch the Daily Dashboard (HOME.txt).
 
 ## Next Action
-Review the remaining Brain files.
-
-## After That
-Start building the Dashboard.
+Define the daily layout for HOME.txt and sync it with CURRENT_WORK.txt.
 
 ## Rule
-Only work on one task until it is finished.
+Only work on one task until it is finished.[cite: 1]
