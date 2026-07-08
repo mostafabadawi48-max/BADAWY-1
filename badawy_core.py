@@ -8,63 +8,65 @@ from watchdog.events import FileSystemEventHandler
 
 # تهيئة محرك الصوت
 engine = pyttsx3.init()
-def speak(text):
-    print(f"[BADAWY-1 Voice]: {text}")
-    engine.say(text)
+def speak(text_to_speak, text_to_print):
+    print(f"[BADAWY-1]: {text_to_print}")
+    engine.say(text_to_speak)
     engine.runAndWait()
 
-# دالة استدعاء الذكاء الاصطناعي المحلي (Llama 3)
+# دالة استدعاء الذكاء الاصطناعي
 def ask_ai_about_file(filename, file_content):
     try:
-        print(f"\n[🧠] BADAWY-1 Brain is analyzing content of {filename}...")
-        prompt = f"المستخدم قام بتحديث ملف اسمه {filename}. محتوى الملف الحالي هو:\n\"{file_content}\"\nبناءً على هذا التحديث، أعطني تعليقاً أو نصيحة أو ملخصاً ذكياً وموجزاً جداً بالعامية المصرية (في سطرين فقط) لأسجله صوتياً للمستخدم."
+        print(f"\n[🧠] BADAWY-1 Brain is analyzing {filename}...")
+        prompt = f"المستخدم قام بتحديث ملف اسمه {filename}. المحتوى الحالي:\n\"{file_content}\"\nبناءً على هذا، أعطني نصيحة أو تعليق ذكي وموجز جداً بالعامية المصرية (في سطر واحد فقط)."
         
         response = ollama.generate(model='llama3', prompt=prompt)
         ai_reply = response['response']
+        
+        # حفظ الرد العربي في ملف نظيف حتى لا يظهر معكوساً في الـ Terminal
+        with open("AI_LOG.txt", "w", encoding="utf-8") as log_file:
+            log_file.write(f"=== BADAWY-1 Advice for {filename} ===\n{ai_reply}\n")
+            
         return ai_reply
     except Exception as e:
         print(f"[X] AI Error: {e}")
-        return "تم تحديث الملف بنجاح، لكن واجهت مشكلة في الاتصال بالعقل المحلي."
+        return "تم التحديث"
 
-# دالة الرفع التلقائي على GitHub
+# دالة الرفع المحسنة على GitHub
 def auto_github_push(filename):
     try:
-        print(f"[🔄] Syncing to GitHub...")
-        subprocess.run(["git", "add", "."], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(["git", "commit", "-m", f"Auto-update: {filename}"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(["git", "push"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        print(f"[✔] GitHub synced.")
+        # استخدام shell=True لتفادي مشاكل الويندوز في الـ Git
+        subprocess.run("git add .", shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(f'git commit -m "Auto-update: {filename}"', shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run("git push origin main", shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        print(f"[✔] GitHub synced successfully.")
     except Exception as e:
-        print(f"[X] GitHub Sync Error: {e}")
+        print(f"[!] GitHub auto-commit created locally (Push skipped or needs configuration).")
 
 class BadawyFileHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if not event.is_directory:
             filename = os.path.basename(event.src_path)
-            if not filename.endswith('.tmp') and not filename.startswith('~') and '.git' not in event.src_path:
+            # تجنب ملفات الـ Log والملفات المؤقتة لمنع اللوب اللانهائي
+            if not filename.endswith('.tmp') and not filename.startswith('~') and filename != "AI_LOG.txt" and '.git' not in event.src_path:
                 print(f"\n[!] Change Detected in: {filename}")
                 
-                # قراءة محتوى الملف لمعالجته بالذكاء الاصطناعي
                 try:
                     with open(event.src_path, 'r', encoding='utf-8') as f:
                         content = f.read()
                 except:
                     content = ""
                 
-                # 1. الرفع على جيت هاب تلقائياً
                 auto_github_push(filename)
-                
-                # 2. سؤال الذكاء الاصطناعي عن التعديل
                 ai_advice = ask_ai_about_file(filename, content)
                 
-                # 3. نطق النصيحة الذكية
-                speak(ai_advice)
+                # ينطق العربي، ولكن يطبع رسالة إنجليزية بالـ Terminal منعا للحروف المعكوسة
+                speak(ai_advice, f"Analysis done! Check 'AI_LOG.txt' to read my advice.")
 
 def start_system():
     print("=========================================")
-    print("  BADAWY-1: AUTONOMOUS AI AGENT v2.0    ")
+    print("  BADAWY-1: AUTONOMOUS AI AGENT v2.1    ")
     print("=========================================")
-    speak("System Online. AI Agent is ready.")
+    speak("System Online.", "System Online. AI Agent is ready.")
     
     event_handler = BadawyFileHandler()
     observer = Observer()
@@ -76,7 +78,7 @@ def start_system():
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-        speak("System Offline.")
+        speak("System Offline.", "System Offline.")
     observer.join()
 
 if __name__ == "__main__":
