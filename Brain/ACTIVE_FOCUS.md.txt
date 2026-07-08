@@ -18,13 +18,13 @@ Complete Version 1.0 of BADAWY-1.
 
 ## Current Mission
 
-Build the Brain.
+Complete Sprint 2 - Brain System
 
 ---
 
 ## Current Stage
 
-Brain Building
+Sprint 2
 
 ---
 
