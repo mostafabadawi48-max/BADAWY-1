@@ -1,0 +1,16 @@
+# NEXT ACTION
+
+## Current Sprint
+Sprint 2 - Brain System
+
+## Current Task
+Complete the Brain System.
+
+## Next Action
+Review the remaining Brain files.
+
+## After That
+Start building the Dashboard.
+
+## Rule
+Only work on one task until it is finished.
