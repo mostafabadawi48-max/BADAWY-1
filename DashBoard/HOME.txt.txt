@@ -1,26 +1,21 @@
-==============================
-        BADAWY-1 HOME
-==============================
+==============================================================
+                    BADAWY-1 : DASHBOARD
+==============================================================
+DATE: 2026-07-08
+CURRENT SPRINT: Sprint 3 - Dashboard System
 
-MISSION
-Manage my life, work, learning, and projects.
+--------------------------------------------------------------
+[ ] TODAY's MISSION: Stabilize the daily operation system.
+--------------------------------------------------------------
 
-TODAY
--
+## 🎯 TOP PRIORITIES FOR TODAY
+1. [ ] مراجعة فواتير CargoX وتدقيق شيتات الإكسيل اليومية بدقة (RPA Work).
+2. [ ] إنهاء إعداد وتشغيل ملف الـ Dashboard الحالي مع BADAWY-1.
+3. [ ] تخصيص ساعة لتعلم مهارة الـ Python (تطبيق عملي دون تشتت).
 
-THIS WEEK
--
+## 🛠️ CURRENT TASKS
+- [ ] افحص بروتوكول الصباح والمساء يوميًا.
+- [ ] الالتزام بتسجيل أي فكرة جديدة فورًا في الـ Idea Bank دون تشتيت المهمة الحالية.
 
-ACTIVE PROJECTS
--
-
-TOP PRIORITIES
-1.
-2.
-3.
-
-REMINDERS
--
-
-NEXT ACTION
--
+## 💡 QUICK NOTES / TEMP IDEAS
+- (أي فكرة تطرأ على بالك أثناء اليوم اكتبها هنا مؤقتًا، وقبل النوم انقلها للـ Idea Bank).
