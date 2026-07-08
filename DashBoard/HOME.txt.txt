@@ -20,3 +20,4 @@ CURRENT SPRINT: Sprint 3 - Dashboard System
 ## 💡 QUICK NOTES / TEMP IDEAS
 - (أي فكرة تطرأ على بالك أثناء اليوم اكتبها هنا مؤقتًا، وقبل النوم انقلها للـ Idea Bank).
 ("أنا محتاج شيتات الاسبوع ده  شيتات الإكسيل بدقة")
+- (Review CargoX invoices).

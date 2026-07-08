@@ -9,64 +9,70 @@ from watchdog.events import FileSystemEventHandler
 # تهيئة محرك الصوت
 engine = pyttsx3.init()
 def speak(text_to_speak, text_to_print):
-    print(f"[BADAWY-1]: {text_to_print}")
+    print(f"\n[BADAWY-1]: {text_to_print}")
     engine.say(text_to_speak)
     engine.runAndWait()
 
-# دالة استدعاء الذكاء الاصطناعي
+# دالة استدعاء الذكاء الاصطناعي (مخرجات بالإنجليزية لضمان القراءة السليمة بالـ Terminal)
 def ask_ai_about_file(filename, file_content):
     try:
-        print(f"\n[🧠] BADAWY-1 Brain is analyzing {filename}...")
-        prompt = f"المستخدم قام بتحديث ملف اسمه {filename}. المحتوى الحالي:\n\"{file_content}\"\nبناءً على هذا، أعطني نصيحة أو تعليق ذكي وموجز جداً بالعامية المصرية (في سطر واحد فقط)."
+        print(f"\n[🧠] Analyzing content of {filename}...")
+        prompt = f"The user updated a file named '{filename}'. Its content is now:\n\"{file_content}\"\nProvide a very brief, smart, and actionable advice or summary based on this content in English (strictly maximum 2 lines)."
         
         response = ollama.generate(model='llama3', prompt=prompt)
         ai_reply = response['response']
-        
-        # حفظ الرد العربي في ملف نظيف حتى لا يظهر معكوساً في الـ Terminal
-        with open("AI_LOG.txt", "w", encoding="utf-8") as log_file:
-            log_file.write(f"=== BADAWY-1 Advice for {filename} ===\n{ai_reply}\n")
-            
         return ai_reply
     except Exception as e:
-        print(f"[X] AI Error: {e}")
-        return "تم التحديث"
+        return f"Error connecting to AI core: {e}"
 
-# دالة الرفع المحسنة على GitHub
+# دالة الرفع التلقائي المبسطة
 def auto_github_push(filename):
     try:
-        # استخدام shell=True لتفادي مشاكل الويندوز في الـ Git
-        subprocess.run("git add .", shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run(f'git commit -m "Auto-update: {filename}"', shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        subprocess.run("git push origin main", shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        print(f"[✔] GitHub synced successfully.")
-    except Exception as e:
-        print(f"[!] GitHub auto-commit created locally (Push skipped or needs configuration).")
+        subprocess.run("git add .", shell=True)
+        subprocess.run(f'git commit -m "Auto-update: {filename}"', shell=True)
+        # لو الـ push بيعلق، الكود هيكمل عادي مش هيوقف البرنامج
+        subprocess.run("git push", shell=True)
+        print(f"[✔] System synced.")
+    except:
+        print(f"[!] Git operation recorded locally.")
 
 class BadawyFileHandler(FileSystemEventHandler):
+    def __init__(self):
+        self.last_triggered = 0
+
     def on_modified(self, event):
         if not event.is_directory:
             filename = os.path.basename(event.src_path)
-            # تجنب ملفات الـ Log والملفات المؤقتة لمنع اللوب اللانهائي
-            if not filename.endswith('.tmp') and not filename.startswith('~') and filename != "AI_LOG.txt" and '.git' not in event.src_path:
-                print(f"\n[!] Change Detected in: {filename}")
+            
+            # منع التكرار السريع في نفس الثانية (Debounce)
+            current_time = time.time()
+            if current_time - self.last_triggered < 2:
+                return
                 
-                try:
-                    with open(event.src_path, 'r', encoding='utf-8') as f:
-                        content = f.read()
-                except:
-                    content = ""
-                
-                auto_github_push(filename)
-                ai_advice = ask_ai_about_file(filename, content)
-                
-                # ينطق العربي، ولكن يطبع رسالة إنجليزية بالـ Terminal منعا للحروف المعكوسة
-                speak(ai_advice, f"Analysis done! Check 'AI_LOG.txt' to read my advice.")
+            # مراقبة الملفات النصية فقط وتجاهل ملفات النظام والجيت
+            if filename.endswith('.txt') or filename.endswith('.md'):
+                if not filename.startswith('~') and '.git' not in event.src_path:
+                    self.last_triggered = current_time
+                    print(f"\n[!] Change Detected in: {filename}")
+                    
+                    try:
+                        with open(event.src_path, 'r', encoding='utf-8') as f:
+                            content = f.read()
+                    except:
+                        content = ""
+                    
+                    # 1. الرفع تلقائياً
+                    auto_github_push(filename)
+                    
+                    # 2. تحليل الـ AI بالإنجليزية نطقاً وكتابة منعاً لأي تهنيج
+                    ai_advice = ask_ai_about_file(filename, content)
+                    speak(ai_advice, ai_advice)
 
 def start_system():
     print("=========================================")
-    print("  BADAWY-1: AUTONOMOUS AI AGENT v2.1    ")
+    print("  BADAWY-1: AUTONOMOUS AI AGENT v2.2    ")
     print("=========================================")
-    speak("System Online.", "System Online. AI Agent is ready.")
+    speak("System Online. AI Agent is ready.", "System Online. AI Agent is ready.")
     
     event_handler = BadawyFileHandler()
     observer = Observer()
