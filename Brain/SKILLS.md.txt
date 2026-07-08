@@ -1,0 +1,40 @@
+# SKILLS
+
+## Current Skills
+
+### Automation
+- UiPath (Learning)
+
+### AI
+- Prompt Engineering (Learning)
+
+### Programming
+- Beginner
+
+### Content Creation
+- YouTube Automation
+
+### Office
+- Excel
+- PDF Processing
+
+---
+
+## Skills To Master
+
+- Python
+- Git & GitHub
+- AI Agents
+- LangChain
+- MCP
+- FastAPI
+- SQL
+- Docker
+- Linux
+- Cloud
+
+---
+
+## Rule
+
+Always learn skills that support my life vision.

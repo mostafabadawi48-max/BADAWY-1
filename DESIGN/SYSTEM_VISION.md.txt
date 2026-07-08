@@ -1,0 +1,5 @@
+# BADAWY-1 System Vision
+
+BADAWY-1 is not an AI chatbot.
+
+It is a Personal AI Operating System that helps Mostafa think clearly, act consistently, remember important things, and build a better life.

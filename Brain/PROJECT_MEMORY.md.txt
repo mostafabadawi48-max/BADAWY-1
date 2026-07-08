@@ -1,0 +1,52 @@
+# PROJECT MEMORY
+
+## Purpose
+
+Remember every project without asking Mostafa to explain it again.
+
+---
+
+# Active Project
+
+## Name
+
+BADAWY-1
+
+## Status
+
+Building
+
+## Mission
+
+Build a personal AI operating system that manages my life, learning, work and projects.
+
+## Current Phase
+
+Brain Building
+
+## Current Version
+
+1.1
+
+## Current Goal
+
+Complete the Brain.
+
+## Next Goal
+
+Build the first working application using Python.
+
+---
+
+# Future Projects
+
+- YouTube Automation
+- Educational App
+- Swimming Academy
+- Vertical Farming
+
+---
+
+# Rule
+
+Whenever a project changes, update this file.
