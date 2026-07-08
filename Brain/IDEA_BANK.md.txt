@@ -32,4 +32,24 @@ Can help my daughter and many other children.
 
 Priority:
 High
+
 # IDEAS
+
+## Template
+
+### Idea #XXX
+
+Title:
+
+Description:
+
+Why is it valuable?
+
+Status:
+Waiting
+
+Priority:
+Low / Medium / High
+
+Date:
+YYYY-MM-DD
