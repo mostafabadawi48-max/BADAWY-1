@@ -22,7 +22,7 @@ Build a personal AI operating system that manages my life, learning, work and pr
 
 ## Current Phase
 
-Sprint 2 - Brain System
+See CURRENT_STATUS.md for current sprint.
 
 ## Current Version
 

@@ -3,8 +3,8 @@
 ## Current Sprint
 Sprint 3 - Dashboard System
 
-## Current Task
-Build and launch the Daily Dashboard (HOME.txt).
+## Current Sprint
+See CURRENT_STATUS.md for current sprint.
 
 ## Next Action
 Define the daily layout for HOME.txt and sync it with CURRENT_WORK.txt.

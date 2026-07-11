@@ -24,8 +24,7 @@ Complete Sprint 2 - Brain System
 
 ## Current Stage
 
-Sprint 2
-
+See CURRENT_STATUS.md for current sprint.
 ---
 
 ## Current Priority

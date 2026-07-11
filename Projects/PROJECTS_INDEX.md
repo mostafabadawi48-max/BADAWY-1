@@ -2,9 +2,10 @@
         PROJECTS INDEX
 ==============================
 
+
 ACTIVE PROJECTS
 
-1.
+1. BADAWY-1 (Personal AI Assistant)
 
 2.
 
@@ -14,11 +15,12 @@ ACTIVE PROJECTS
 
 PLANNED PROJECTS
 
-1.
+1. Automation Freelancing
+2. YouTube Automation
+3. Educational App for Kids
+4. Adult Swimming Academy
+5. Vertical Farming
 
-2.
-
-3.
 
 ------------------------------
 
@@ -34,7 +36,8 @@ COMPLETED PROJECTS
 
 NEXT PROJECT TO START
 
--
+-- (هيتحدد بعد ما BADAWY-1 يخلص)
+
 
 ------------------------------
 

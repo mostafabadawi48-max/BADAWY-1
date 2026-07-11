@@ -24,10 +24,10 @@ Target:
 Become my own Jarvis.
 
 Current Version:
-1.0
+See CURRENT_STATUS.md
 
 Current Phase:
-Foundation
+See CURRENT_STATUS.md
 
 Next Milestone:
 Complete the Brain and Task Management System.

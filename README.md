@@ -14,4 +14,4 @@ An AI that acts as:
 - Execution System
 
 ## Current Sprint
-Sprint 1 - Development Setup
+See CURRENT_STATUS.md for current sprint.

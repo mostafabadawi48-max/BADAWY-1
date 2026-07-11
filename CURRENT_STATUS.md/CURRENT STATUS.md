@@ -3,18 +3,16 @@
 Version 1.1
 
 Current Sprint
-Development Setup
+Sprint 3 - Dashboard System
 
 Current Mission
-Move BADAWY-1 to my personal laptop.
+Build and launch the Daily Dashboard (HOME.md).
 
 Current Task
-Install Python
-Install Git
-Create GitHub Repository
+Define the daily layout for HOME.md and sync it with CURRENT_WORK.md.
 
 Next Step
-Build the first Dashboard.
+Stabilize the daily operation system.
 
 Project Status
-Ready for Development.
+In Development.
