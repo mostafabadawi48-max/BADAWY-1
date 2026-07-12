@@ -1,6 +1,7 @@
 import os
 import sys
-import requests
+from memory import save_conversation, get_recent_memory
+from groq import Groq
 import json
 from datetime import datetime
 import arabic_reshaper
@@ -16,8 +17,8 @@ if sys.platform.startswith('win'):
     os.system('chcp 65001 > nul')
     sys.stdout.reconfigure(encoding='utf-8')
 
-OLLAMA_MODEL = "llama3" 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+GROQ_MODEL = "llama-3.3-70b-versatile"
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 def fix_text(text):
     if not text.strip():
@@ -31,14 +32,14 @@ def speak_text(text):
         engine.say(clean_text)
         engine.runAndWait()
 
-def ask_ollama(prompt):
-    payload = {"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}
+def ask_groq(prompt):
     try:
-        # تم زيادة الـ timeout إلى 60 ثانية
-        response = requests.post(OLLAMA_URL, json=payload, timeout=60)
-        if response.status_code == 200:
-            return response.json().get("response", "")
-        return f"Error code {response.status_code}"
+        response = client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7,
+        )
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error: {e}"
 
@@ -51,38 +52,39 @@ def ai_agent_chat():
     speak_text("جارفيس جاهز ومستمع إليك الآن")
 
     dashboard_context = ""
+    memory_context = get_recent_memory(5)
     dashboard_path = os.path.join("DASHBOARD", "HOME.md")
     if os.path.exists(dashboard_path):
         with open(dashboard_path, "r", encoding="utf-8") as f:
             dashboard_context = f.read()
 
     while True:
-        # الإدخال عادي، التيرمنال سيعرضه مشوهاً أثناء الكتابة لكن الكود سيصلحه بالخلفية
         user_input = input("You >>> ")
         if user_input.strip().lower() in ["خروج", "exit", "quit"]:
             break
-            
+
         if not user_input.strip():
             continue
 
-        # إصلاح النص برمجياً قبل إرساله للموديل ليقرأه صحيحاً
         fixed_user_input = get_display(arabic_reshaper.reshape(user_input))
 
         full_prompt = f"""
         You are BADAWY-1 (Jarvis), a smart AI Personal Assistant. 
         Respond in short, clear, and helpful Arabic so it can be spoken easily.
         Context: {dashboard_context}
+        Recent memory: {memory_context}
         User: {fixed_user_input}
         Assistant:"""
-        
+
         print(fix_text("⏳ جارفيس يفكر ويتحدث..."))
-        ai_response = ask_ollama(full_prompt)
-        
+        ai_response = ask_groq(full_prompt)
+
         print("\n" + "="*50)
         print(fix_text(ai_response))
         print("="*50 + "\n")
-        
+
         speak_text(ai_response)
+        save_conversation(fixed_user_input, ai_response)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--agent":
