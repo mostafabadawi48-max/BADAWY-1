@@ -6,7 +6,21 @@ import json
 from datetime import datetime
 import arabic_reshaper
 from bidi.algorithm import get_display
-
+def load_brain_context():
+    brain_folder = "Brain"
+    context_parts = []
+    if os.path.exists(brain_folder):
+        for filename in os.listdir(brain_folder):
+            if filename.endswith(".md"):
+                filepath = os.path.join(brain_folder, filename)
+                with open(filepath, "r", encoding="utf-8") as f:
+                    content = f.read()
+                    context_parts.append(f"--- {filename} ---\n{content}")
+    dashboard_path = os.path.join("DASHBOARD", "HOME.md")
+    if os.path.exists(dashboard_path):
+        with open(dashboard_path, "r", encoding="utf-8") as f:
+            context_parts.append(f"--- HOME.md ---\n{f.read()}")
+    return "\n\n".join(context_parts)
 try:
     import pyttsx3
     engine = pyttsx3.init()
@@ -51,13 +65,8 @@ def ai_agent_chat():
     print("="*50)
     speak_text("جارفيس جاهز ومستمع إليك الآن")
 
-    dashboard_context = ""
     memory_context = get_recent_memory(5)
-    dashboard_path = os.path.join("DASHBOARD", "HOME.md")
-    if os.path.exists(dashboard_path):
-        with open(dashboard_path, "r", encoding="utf-8") as f:
-            dashboard_context = f.read()
-
+    brain_context = load_brain_context()
     while True:
         user_input = input("You >>> ")
         if user_input.strip().lower() in ["خروج", "exit", "quit"]:
@@ -71,7 +80,7 @@ def ai_agent_chat():
         full_prompt = f"""
         You are BADAWY-1 (Jarvis), a smart AI Personal Assistant. 
         Respond in short, clear, and helpful Arabic so it can be spoken easily.
-        Context: {dashboard_context}
+        Context: {brain_context}
         Recent memory: {memory_context}
         User: {fixed_user_input}
         Assistant:"""
