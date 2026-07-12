@@ -26,5 +26,3 @@ def get_recent_memory(limit=5):
     )
     rows = cursor.fetchall()
     return rows
-cursor.execute("SELECT * FROM conversations")
-print(cursor.fetchall())

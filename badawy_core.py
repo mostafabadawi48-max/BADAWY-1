@@ -6,6 +6,10 @@ import json
 from datetime import datetime
 import arabic_reshaper
 from bidi.algorithm import get_display
+import speech_recognition as sr
+import sounddevice as sd
+import numpy as np
+import scipy.io.wavfile as wav
 def load_brain_context():
     brain_folder = "Brain"
     context_parts = []
@@ -20,7 +24,23 @@ def load_brain_context():
     if os.path.exists(dashboard_path):
         with open(dashboard_path, "r", encoding="utf-8") as f:
             context_parts.append(f"--- HOME.md ---\n{f.read()}")
-    return "\n\n".join(context_parts)
+        return "\n\n".join(context_parts)
+def listen_from_mic(duration=5, samplerate=44100):
+    print(fix_text("🎤 اتكلم دلوقتي..."))
+    recording = sd.rec(int(duration * samplerate), samplerate=samplerate, channels=1, dtype='int16')
+    sd.wait()
+    wav.write("temp_audio.wav", samplerate, recording)
+
+    recognizer = sr.Recognizer()
+    with sr.AudioFile("temp_audio.wav") as source:
+        audio_data = recognizer.record(source)
+    try:
+        text = recognizer.recognize_google(audio_data, language="ar-EG")
+        return text
+    except sr.UnknownValueError:
+        return ""
+    except sr.RequestError as e:
+        return f"Error: {e}"
 try:
     import pyttsx3
     engine = pyttsx3.init()
@@ -68,33 +88,26 @@ def ai_agent_chat():
     memory_context = get_recent_memory(5)
     brain_context = load_brain_context()
     while True:
-        user_input = input("You >>> ")
+        print(fix_text("اكتب 'صوت' عشان تتكلم، أو اكتب رسالتك عادي:"))
+        typed = input("You >>> ")
+        if typed.strip() == "صوت":
+            user_input = listen_from_mic()
+            print(fix_text(f"سمعتك بتقول: {user_input}"))
+        else:
+            user_input = typed
+
         if user_input.strip().lower() in ["خروج", "exit", "quit"]:
             break
 
         if not user_input.strip():
             continue
-
-        fixed_user_input = get_display(arabic_reshaper.reshape(user_input))
-
-        full_prompt = f"""
-        You are BADAWY-1 (Jarvis), a smart AI Personal Assistant. 
-        Respond in short, clear, and helpful Arabic so it can be spoken easily.
-        Context: {brain_context}
-        Recent memory: {memory_context}
-        User: {fixed_user_input}
-        Assistant:"""
-
-        print(fix_text("⏳ جارفيس يفكر ويتحدث..."))
-        ai_response = ask_groq(full_prompt)
-
-        print("\n" + "="*50)
-        print(fix_text(ai_response))
-        print("="*50 + "\n")
-
-        speak_text(ai_response)
-        save_conversation(fixed_user_input, ai_response)
+        response = ask_groq(user_input)
+        print(fix_text(f"🤖 {response}"))
+        speak_text(response)
+        save_conversation(user_input, response)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--agent":
+    if "--agent" in sys.argv:
         ai_agent_chat()
+    else:
+        print("استخدم --agent لتشغيل البرنامج")
