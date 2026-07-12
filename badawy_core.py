@@ -10,6 +10,7 @@ import speech_recognition as sr
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
+
 def load_brain_context():
     brain_folder = "Brain"
     context_parts = []
@@ -25,6 +26,7 @@ def load_brain_context():
         with open(dashboard_path, "r", encoding="utf-8") as f:
             context_parts.append(f"--- HOME.md ---\n{f.read()}")
         return "\n\n".join(context_parts)
+
 def listen_from_mic(duration=5, samplerate=44100):
     print(fix_text("🎤 اتكلم دلوقتي..."))
     recording = sd.rec(int(duration * samplerate), samplerate=samplerate, channels=1, dtype='int16')
@@ -41,6 +43,7 @@ def listen_from_mic(duration=5, samplerate=44100):
         return ""
     except sr.RequestError as e:
         return f"Error: {e}"
+
 try:
     import pyttsx3
     engine = pyttsx3.init()
@@ -101,6 +104,7 @@ def ai_agent_chat():
 
         if not user_input.strip():
             continue
+
         response = ask_groq(user_input)
         print(fix_text(f"🤖 {response}"))
         speak_text(response)
