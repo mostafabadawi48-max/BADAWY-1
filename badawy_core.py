@@ -10,7 +10,7 @@ import speech_recognition as sr
 import sounddevice as sd
 import numpy as np
 import scipy.io.wavfile as wav
-
+from google_calendar import get_upcoming_events
 def load_brain_context():
     brain_folder = "Brain"
     context_parts = []
@@ -105,7 +105,18 @@ def ai_agent_chat():
         if not user_input.strip():
             continue
 
-        response = ask_groq(user_input)
+        if "مواعيد" in user_input or "كالندر" in user_input:
+            events = get_upcoming_events()
+            if not events:
+                response = "مفيش مواعيد جاية عندك."
+            else:
+                lines = []
+                for event in events:
+                    start = event['start'].get('dateTime', event['start'].get('date'))
+                    lines.append(f"{start} - {event.get('summary', 'بدون عنوان')}")
+                response = "المواعيد الجاية:\n" + "\n".join(lines)
+        else:
+            response = ask_groq(user_input)
         print(fix_text(f"🤖 {response}"))
         speak_text(response)
         save_conversation(user_input, response)
